@@ -7,8 +7,8 @@ import CreateTaskView from './pages/createtask.jsx';
 import OrganizeView from './pages/board.jsx';
 import MembersView from './pages/members.jsx';
 import StudiosView from './pages/studios.jsx';
-
-
+import ProjectsView from './pages/projects.jsx';
+import AssignView from './pages/assign.jsx';
 
 
          
@@ -43,10 +43,11 @@ function Navbar() {
 
         {activeStudio ? (
           <>
+           <Link to={`/studios/${activeStudio}/projects/`} style={linkStyle}>Projects</Link>
             <Link to={`/studios/${activeStudio}/projects/${projectId}/create-task/`} style={linkStyle}>Create Task</Link>
             <Link to={`/studios/${activeStudio}/projects/${projectId}/organize/`} style={linkStyle}>Organize Tasks</Link>
             <Link to={`/studios/${activeStudio}/projects/${projectId}/members/`} style={linkStyle}>Manage Members</Link>
-            
+            <Link to={`/studios/${activeStudio}/projects/${projectId}/assign/`} style={linkStyle}>Assign Tasks</Link>
             <span >Current Studio: {activeStudio}</span>
           </>   
         ) : (
@@ -64,9 +65,11 @@ export default function App() {
       <Routes>
 
         <Route path="/" element={<HomeView />} />
+        <Route path="/studios/:studioSlug/projects" element={<ProjectsView />} />
         <Route path="/studios/:studioSlug/projects/:projectId/create-task"  element={<CreateTaskView />} />
         <Route path="/studios/:studioSlug/projects/:projectId/organize" element={<OrganizeView />} />
         <Route path="/studios/:studioSlug/projects/:projectId/members"  element={<MembersView />} />
+        <Route path="/studios/:studioSlug/projects/:projectId/assign"  element={<AssignView />} />
         <Route path="/studios" element={<StudiosView />} />
          
 

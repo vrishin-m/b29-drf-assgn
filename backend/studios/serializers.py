@@ -23,13 +23,30 @@ class StudioSerializer(serializers.ModelSerializer):
         return obj.memberships.count()
 
 
+
+
 class MembershipSerializer(serializers.ModelSerializer):
     user = UserSummarySerializer(read_only=True)
-    user_email    = serializers.EmailField(source='user.email', read_only=True)
-    user_name     = serializers.CharField(source='user.full_name', read_only=True)
-    role_display  = serializers.CharField(source='get_role_display', read_only=True)
+    user_email   = serializers.EmailField(source='user.email', read_only=True)
+    user_name    = serializers.CharField(source='user.full_name', read_only=True)
+    role_display = serializers.CharField(source='get_role_display', read_only=True)
+    invite_username = serializers.CharField(write_only=True)
 
     class Meta:
         model = Membership
-        fields = ['id', 'user', 'user_email', 'user_name', 'role', 'role_display', 'joined_at']
+        fields = ['id', 'user', 'user_email', 'user_name', 'role', 'role_display', 'joined_at', 'invite_username']
         read_only_fields = ['id', 'joined_at', 'user_email', 'user_name']
+
+    def create(self, validated_data):
+        username = validated_data.pop('invite_username')
+        studio = validated_data.get('studio') 
+
+        try:
+            user_to_add = User.objects.get(username=username)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({"invite_username": f"User '{username}' does not exist."})
+
+        if Membership.objects.filter(studio=studio, user=user_to_add).exists():
+            raise serializers.ValidationError({"invite_username": "This user is already a member of this studio."})
+
+        return Membership.objects.create(user=user_to_add, **validated_data)

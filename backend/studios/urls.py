@@ -4,4 +4,6 @@ from .views import StudioViewSet
 router = DefaultRouter()
 router.register(r'studios', StudioViewSet, basename='studio')
 
-urlpatterns = router.urls
+urlpatterns = []
+
+urlpatterns += router.urls

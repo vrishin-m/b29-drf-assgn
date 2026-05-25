@@ -112,7 +112,7 @@ export default function CreateTask() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               style={styles.input}
-              placeholder="What needs doing?"
+              placeholder="cook potatos"
               required
             />
           </div>
@@ -122,7 +122,7 @@ export default function CreateTask() {
             <textarea 
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Add more details about this task allocation..."
+              placeholder="boil em mash em stick em in a stew"
               style={{ ...styles.input, minHeight: '80px', resize: 'vertical' }}
             />
           </div>
@@ -203,9 +203,7 @@ export default function CreateTask() {
   );
 }
 
-// ==========================================
-// 🎨 ENHANCED STYLING INTERFACES
-// ==========================================
+
 const styles = {
   page: { padding: '100px 20px', fontFamily: 'sans-serif', maxWidth: '800px', margin: '0 auto' },
   header: { marginBottom: '20px', color: '#2d3748' },

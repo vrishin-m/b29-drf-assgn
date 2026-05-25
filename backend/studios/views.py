@@ -12,7 +12,8 @@ class StudioViewSet(viewsets.ModelViewSet):
     serializer_class = StudioSerializer
     permission_classes = [IsAuthenticated]
 
-    lookup_field = "slug"
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'slug'
 
     def get_permissions(self):
         permission_map = {
@@ -159,18 +160,18 @@ class StudioViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], permission_classes=[IsStudioAdmin])
     def add_member(self, request, slug=None):
         studio = self.get_object()
-        email = request.data.get('email')
-        role  = request.data.get('role', 'designer')
+        target_email = request.data.get('invite_email')
+        role = request.data.get('role', 'designer')
 
         if role not in Role.values:
-            return Response(
+            return Response(    
                 {"role": "Invalid role."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
             User = get_user_model()
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=target_email)
         except User.DoesNotExist:
             return Response({'detail': 'No user with that email exists.'}, status=404)
 

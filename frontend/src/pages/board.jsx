@@ -6,17 +6,17 @@ import { useParams } from 'react-router-dom';
 const COLUMN_NAMES = ['draft', 'review', 'revision', 'approved', 'completed'];
 
 export default function TaskBoard() {
-  const { studioSlug } = useParams();
+  const { studioSlug, projectId } = useParams();
   const [data, setData] = useState({ tasks: {}, columns: {}, columnOrder: [] });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchProjectTasks = async () => {
-      if (!studioSlug) return;
-      
+      if (!studioSlug || !projectId) return;
+
       try {
-        const url = `studios/${studioSlug}/tasks/`;
+        const url = `studios/${studioSlug}/projects/${projectId}/tasks/`;
         const response = await api.get(url);
         const rawTasks = response.data;
 
@@ -55,7 +55,7 @@ export default function TaskBoard() {
     };
 
     fetchProjectTasks();
-  }, [studioSlug]); 
+  }, [studioSlug, projectId]); 
 
   const onDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
@@ -97,7 +97,7 @@ export default function TaskBoard() {
     });
 
     try {
-      const url = `studios/${studioSlug}/tasks/${draggableId}/transition/`;
+      const url = `studios/${studioSlug}/projects/${projectId}/tasks/${draggableId}/transition/`;
       await api.post(url, { to_stage: destination.droppableId });
     } catch (err) {
       console.error("Failed to transition task stage:", err);
@@ -158,7 +158,7 @@ export default function TaskBoard() {
                               <strong style={{ display: 'block', marginBottom: '8px', color: '#f7fafc', fontSize: '14px' }}>{task.title}</strong>
                               {task.description && <p style={{ fontSize: '13px', color: '#a0aec0', margin: '0 0 10px 0', lineHeight: '1.4' }}>{task.description}</p>}
                               <div style={{ fontSize: '11px', color: '#cbd5e0', textTransform: 'uppercase', fontWeight: 'bold', display: 'inline-block', backgroundColor: '#1a202c', padding: '2px 8px', borderRadius: '4px' }}>
-                                ⚡ {task.priority || 'Medium'}
+                                  {task.priority || 'Medium'}
                               </div>
                             </div>
                           )}

@@ -34,37 +34,9 @@ export default function StudiosView() {
     fetchStudios();
   }, []);
 
-
-const handleSelectStudio = async (studio) => {
+const handleSelectStudio = (studio) => {
   localStorage.setItem('current_studio_slug', studio.slug);
-  setActiveStudioSlug(studio.slug);
-
-  try {
-    const response = await api.get(`studios/${studio.slug}/projects/`);
-    const projectsList = Array.isArray(response.data) ? response.data : response.data.results || [];
-
-    if (projectsList.length > 0) {
-      const realProjectId = projectsList[0].id;
-      localStorage.setItem('current_project_id', realProjectId);
-      navigate(`/studios/${studio.slug}/projects/${realProjectId}/organize`);
-    } else {
-      console.log(" Studio empty. Silently initializing backend project container...");
-      
-      const createResponse = await api.post(`studios/${studio.slug}/projects/`, {
-        name: "Default Potato",
-        description: "boil em mash em stick em in a stew."
-      });
-
-      const newProjectId = createResponse.data.id;
-      localStorage.setItem('current_project_id', newProjectId);
-      navigate(`/studios/${studio.slug}/projects/${newProjectId}/organize`);
-    }
-  } catch (err) {
-    console.error("Failed to sync project workspace context:", err);
-    const fallbackUUID = crypto.randomUUID();
-    localStorage.setItem('current_project_id', fallbackUUID);
-    navigate(`/studios/${studio.slug}/projects/${fallbackUUID}/organize`);
-  }
+  navigate(`/studios/${studio.slug}/projects`); 
 };
 
 
