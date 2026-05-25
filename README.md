@@ -1,23 +1,28 @@
-# b29-drf-assgn
-### Creative Studio Workflow System
-Build a full stack system (you may use react or any different frontend framework and Django REST Framework for backend) for a creative studio platform where teams manage projects like posters, videos, campaigns, or content workflows.
+studio workflow app!!!!
 
-The platform should support multiple studios/teams with isolated data and proper role-based access control. Example roles may include Studio Admin, Project Lead, Designer, Writer, Reviewer, and Client Viewer.
+how it works:
+users can create studios
+a studio is like a company
+in a studio, you can create multiple projects
+you can split these projects into tasks
+you can add other users of the app to your studio
+you can assign tasks to the users
+you can also give or take roles from the users, which gives rise to RBAC
 
-Core deliverables:
- - Project creation and task/work item management
- - Assigning tasks to team members (use your learnings of RBAC here)
- - Workflow stages such as Draft, Review, Revision, Approved, and Completed
- - Comments/feedback threads on tasks
- - Deadlines, priorities, tags, and attachments (treat them as labels)
- - Search and filtering support (may use django filter)
- - Notifications for important actions/events
+installation:
+download all the code, then:
 
-Bonus deliverables:
-  - Create a Chat Section for communication among the team members (may use websockets)
-  - Dashboard for overdue items and project progress (A tracker sort of)
-  - Delayed reminders for pending review (may use celery)
-  - Version history on submitted work items (learn how to maintain multiple versions)
-  - Restricted transitions between workflow stages (manage stage dependencies)
+frontend:
+npm install
+npm run dev
 
-**Deadline: 24th May EOD**
+
+backend:
+set up a venv
+install django, pip install -r requirements.txt
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+
+now, you can go to localhost:5173 and try it out!
