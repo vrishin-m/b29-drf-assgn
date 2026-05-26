@@ -9,14 +9,14 @@ import MembersView from './pages/members.jsx';
 import StudiosView from './pages/studios.jsx';
 import ProjectsView from './pages/projects.jsx';
 import AssignView from './pages/assign.jsx';
-
+import NotificationDropdown from './pages/notifications.jsx';
 
          
 function Navbar() {
   const [activeStudio, setActiveStudio] = useState('');
   const [projectId, setProjectId] = useState('');
   const location = useLocation();
-  
+ 
   useEffect(() => {
     const storedSlug = localStorage.getItem('current_studio_slug');
     const storedProjectId = localStorage.getItem('current_project_id');
@@ -48,6 +48,7 @@ function Navbar() {
             <Link to={`/studios/${activeStudio}/projects/${projectId}/organize/`} style={linkStyle}>Organize Tasks</Link>
             <Link to={`/studios/${activeStudio}/projects/${projectId}/members/`} style={linkStyle}>Manage Members</Link>
             <Link to={`/studios/${activeStudio}/projects/${projectId}/assign/`} style={linkStyle}>Assign Tasks</Link>
+             <NotificationDropdown />
             <span >Current Studio: {activeStudio}</span>
           </>   
         ) : (
