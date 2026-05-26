@@ -33,20 +33,25 @@ def create_task_notification(sender, instance, created, **kwargs):
                 }
             )
 
-@receiver(post_save, sender=Comment)
+
+
+@receiver(post_save, sender='comments.Comment')
 def create_comment_notification(sender, instance, created, **kwargs):
     if created:
-        task = instance.task
-        recipient = task.assignee_id
-        
-        if recipient:
-            Notification.objects.create(
-                recipient=recipient,
-                actor=instance.author,
-                event_type=Notification.COMMENT_ADDED,
-                payload={
-                    "task_id": str(task.id),
-                    "task_title": task.title,
-                    "comment_preview": instance.text[:50] 
-                }
-            )
+        try:
+            task = instance.task
+            recipient = task.assigned_to or task.created_by
+            
+            if recipient and recipient != instance.author:
+                Notification.objects.create(
+                    recipient=recipient,
+                    actor=instance.author,
+                    event_type=Notification.COMMENT_ADDED,
+                    payload={
+                        "task_id": str(task.id),
+                        "task_title": getattr(task, 'title', 'Untitled Task'),
+                        "comment_preview": instance.body[:50] 
+                    }
+                )
+        except Exception as e:
+            print(f" error in comment notification: {str(e)}")

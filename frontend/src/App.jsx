@@ -10,7 +10,7 @@ import StudiosView from './pages/studios.jsx';
 import ProjectsView from './pages/projects.jsx';
 import AssignView from './pages/assign.jsx';
 import NotificationDropdown from './pages/notifications.jsx';
-
+import CommentsView from './pages/comments.jsx';
          
 function Navbar() {
   const [activeStudio, setActiveStudio] = useState('');
@@ -48,6 +48,7 @@ function Navbar() {
             <Link to={`/studios/${activeStudio}/projects/${projectId}/organize/`} style={linkStyle}>Organize Tasks</Link>
             <Link to={`/studios/${activeStudio}/projects/${projectId}/members/`} style={linkStyle}>Manage Members</Link>
             <Link to={`/studios/${activeStudio}/projects/${projectId}/assign/`} style={linkStyle}>Assign Tasks</Link>
+            <Link to={`/studios/${activeStudio}/projects/${projectId}/comments/`} style={linkStyle}>Comments</Link>
              <NotificationDropdown />
             <span >Current Studio: {activeStudio}</span>
           </>   
@@ -72,7 +73,8 @@ export default function App() {
         <Route path="/studios/:studioSlug/projects/:projectId/members"  element={<MembersView />} />
         <Route path="/studios/:studioSlug/projects/:projectId/assign"  element={<AssignView />} />
         <Route path="/studios" element={<StudiosView />} />
-         
+        <Route path="/studios/:studioSlug/projects/:projectId/comments" element={<CommentsView/>} 
+         />
 
       </Routes>
     </BrowserRouter>
